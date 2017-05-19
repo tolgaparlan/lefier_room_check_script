@@ -8,7 +8,7 @@ def create_soup(html):
 #extract links from the rooms page
 def extract_links(soup):
     link_reg = re.compile('\/Groningen\/Woning\/Studentenkamer')
-    links = soup.find_all('a',href=link_reg)
+    links = soup.find_all('a',{"class":"details"})
     page_base = 'https://www.lefier.nl'
     return [page_base+link['href'] for link in links]
 
@@ -28,9 +28,14 @@ def parse_room_info(info_table,price):
     return [price.text.strip(),room_dict]
 
 #check if the date is after august
-def date_suitable(room_info,month_num):
+def date_suitable(room_info,month):
     date = room_info['Te huur vanaf'].split('-')
-    return int(date[1])>=month_num
+    return int(date[1])>=month
+
+#check if price is below the given 
+def price_suitable(room_price,max_price):
+    room_price = int(room_price.split()[1].split(',')[0])
+    return room_price <= max_price
 
 #print all rooms in the list with the price
 def print_room_info(room_info):
