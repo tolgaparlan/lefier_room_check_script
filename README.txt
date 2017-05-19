@@ -1,6 +1,6 @@
 How to run:
 -Clone the repository 
--Run ./lefier-script.py on terminal
+-Run ./lefier_script.py on terminal
 -Enter the month when you are prompted (in number format)
 
 Dependencies:
