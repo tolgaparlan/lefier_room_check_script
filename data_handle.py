@@ -16,9 +16,22 @@ def extract_links(baseUrl, soup):
 # returns the room info from the html
 
 
-def get_room_info(soup,link):
-  info_table = soup.find_all('table', {'class': 'info'})
-  name = soup.find('h1')
-  return {name:link}
+def get_room_name(soup,link):
+  name = soup.find('h1').string
+  return {'name':name, 'link':link}
 
-# parses the room info into a dict, returns it with the price
+# checks if everything in dict1 is also in dict2
+def compare(dict1, dict2):
+  diff = {}
+  diff['difference'] = False
+  diff['newAddedRooms'] = {}
+
+  for item in dict1:
+    if item not in dict2:
+      diff['difference'] = True
+      diff['newAddedRooms'][item] = dict1[item]
+  return diff
+
+def printPretty(dic):
+  for item in dic:
+    print(item + " : " + dic[item])
