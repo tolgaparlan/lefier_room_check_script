@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+import re
 
 # creates a soup object from given html
 
@@ -6,19 +7,16 @@ from bs4 import BeautifulSoup
 def create_soup(html):
   return BeautifulSoup(html, 'html.parser')
 
-# extract links from the rooms page
+# extract names with corresponding links from the soup of the rooms page
 
 
-def extract_links(baseUrl, soup):
-  links = soup.find_all('a', {"class": "details"})
-  return [baseUrl + link['href'] for link in links]
-
-# returns the room info from the html
-
-
-def get_room_name(soup,link):
-  name = soup.find('h1').string
-  return {'name':name, 'link':link}
+def extract_names_links(baseUrl, soup):
+  room_links = {}
+  all_links = soup.find_all('a', href=True)
+  for link in all_links:
+    if link['href'] and link.string and re.search("\w+\s[1-9]", link.string):
+      room_links[link.string] = baseUrl + link['href']
+  return room_links
 
 # checks if everything in dict1 is also in dict2
 def compare(dict1, dict2):

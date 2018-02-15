@@ -17,19 +17,17 @@ pageNum = 1
 
 while True:
   cheap_rooms_response = request_room_list(lookUpUrl, pageNum)
+  # print(cheap_rooms_response)
+  # break
   soup_rooms = create_soup(cheap_rooms_response)
 
-  # extract the links to the results
-  room_links = extract_links(baseUrl, soup_rooms)
+  # extract the room names and their links
+  room_links = extract_names_links(baseUrl, soup_rooms)
+  
   if len(room_links) == 0:
     break
 
-  # access all the links, parse the data
-  for link in room_links:
-    room_page = get_page(link)
-    room_page_soup = create_soup(room_page)
-    room_details = get_room_name(room_page_soup, link)
-    rooms[room_details['name']] = room_details['link']
+  rooms.update(room_links)
 
   pageNum += 1
 
