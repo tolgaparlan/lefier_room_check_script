@@ -11,7 +11,8 @@ rooms = {}
 
 lookUpUrl = 'https://woningen.lefier.nl/Groningen/Zoeken/Kamers'
 baseUrl = 'https://woningen.lefier.nl'
-fileLocation = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+# file_location = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+file_location = "/usr/share/lefier_script"
 fileName = 'last_reading.txt'
 pageNum = 1
 
@@ -31,8 +32,8 @@ while True:
 
   pageNum += 1
 
-if os.path.isfile(fileLocation+'/'+fileName):
-  f = open(os.path.join(fileLocation, fileName),'r')
+if os.path.isfile(file_location+'/'+fileName):
+  f = open(os.path.join(file_location, fileName),'r')
   raw_data = f.read()
   f.close()
 
@@ -43,8 +44,10 @@ if os.path.isfile(fileLocation+'/'+fileName):
   else:
     print("Nothing New")
 else:
-  print("Old rooms data not found")
+  print("Old rooms data not found.\nCreated new file under " + file_location)
 
 # write all the room information to a file
-f = open(os.path.join(fileLocation, fileName),'w')
+if(not os.path.exists(file_location)):
+  os.mkdir(file_location)
+f = open(os.path.join(file_location, fileName),'w')
 f.write(str(rooms))
